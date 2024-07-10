@@ -6,15 +6,19 @@ namespace MwGame;
 
 public class Game1 : Game
 {
+    public static Game1 Instance;
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    public SpriteBatch SpriteBatch { get{ return _spriteBatch; }}
+
     private World _world;
 
-    Texture2D _testTex;
 
     public Game1()
     {
+        Instance = this;
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -25,6 +29,8 @@ public class Game1 : Game
         _world = new World();
         // TODO: Add your initialization logic here
 
+        NewGame.Apply(_world);
+
         base.Initialize();
     }
 
@@ -33,7 +39,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        _testTex = Content.Load<Texture2D>("img/player");
+        
     }
 
     protected override void Update(GameTime gameTime)
@@ -42,6 +48,7 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
+        _world.Update();
 
         base.Update(gameTime);
     }
@@ -53,7 +60,9 @@ public class Game1 : Game
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
 
-        _spriteBatch.Draw(_testTex, new Vector2(0, 0), Color.White);
+        _world.Draw();
+
+
         _spriteBatch.End();
 
         base.Draw(gameTime);
