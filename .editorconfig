@@ -1,0 +1,17 @@
+[*.{cs,vb}]
+
+# IDE0017: Simplify object initialization
+dotnet_diagnostic.IDE0017.severity = none
+[*.{cs,vb}]
+
+# IDE0017: Simplify object initialization
+dotnet_style_object_initializer = false
+[*.{cs,vb}]
+
+# IDE0017: Simplify object initialization
+dotnet_diagnostic.IDE0017.severity = none
+
+tab_width = 4
+indent_style = tab
+
+
