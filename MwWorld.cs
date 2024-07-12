@@ -1,32 +1,32 @@
 namespace MwGame
 {
 
-    public class World
+    public class MwWorld
     {
-        private Room _room;
+        // private Room _room;
         private Player _player;
 
-        public Room Room { get { return _room; }}
+        // public Room Room { get { return _room; }}
 
-        public World()
+        public MwWorld()
         {
-            _room = new Room();
+            // _room = new Room();
         }
 
         public void AddPlayer(Player player)
         {
             _player = player;
-            _room.Entities.Add(player);
+            // _room.Entities.Add(player);
         }
 
         public void Update()
         {
-            _room.Update();
+            // _room.Update();
         }
 
         public void Draw()
         {
-            _room.Draw();
+            // _room.Draw();
         }
     }
 }

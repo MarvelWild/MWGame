@@ -10,6 +10,7 @@ public class Entities {
 
     public void Add(IEntity entity)
     {
+		entity.Load();
         List.Add(entity);
     }
 

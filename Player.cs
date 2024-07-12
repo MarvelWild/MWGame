@@ -6,6 +6,9 @@ namespace MwGame
 
 	public class Player : BaseEntity
 	{
+		public Inventory Inventory = new Inventory();
+
+
 		public Player()
 		{
 			SetTexture("player");

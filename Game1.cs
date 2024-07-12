@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.ECS;
+using MonoGame.Extended.VectorDraw;
 
 namespace MwGame;
 
@@ -15,6 +18,9 @@ public class Game1 : Game
 
 	public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
 
+	private MwWorld _mwWorld;
+
+	private WorldBuilder _worldBuilder;
 	private World _world;
 
 
@@ -48,18 +54,37 @@ public class Game1 : Game
 		IsMouseVisible = true;
 	}
 
+	private Matrix _primitivesProjectionMatrix;
+	private Matrix _matrixIdentity = Matrix.Identity;
 	protected override void Initialize()
 	{
-		_world = new World();
+		_mwWorld = new MwWorld();
 
-		NewGame.Apply(_world);
+		NewGame.Apply(_mwWorld);
 		// _gridColor. = 0;
 
+		_primitivesProjectionMatrix = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
+
+		_drawTestBatch = new PrimitiveBatch(GraphicsDevice, 1024);
+		_drawTest = new PrimitiveDrawing(_drawTestBatch);
+
+		_worldBuilder = new WorldBuilder();
+
+		var aspectBuilder = new AspectBuilder();
+		_worldBuilder.AddSystem(new GameEntityDrawSystem(aspectBuilder));
+		_world = _worldBuilder.Build();
+		var player = _world.CreateEntity();
+		
+		
+		
 		base.Initialize();
 	}
 
 	BasicEffect _gridEffect;
 	Color _gridColor = Color.LightGray;
+
+	PrimitiveDrawing _drawTest;
+	PrimitiveBatch _drawTestBatch;
 
 	protected override void LoadContent()
 	{
@@ -72,6 +97,15 @@ public class Game1 : Game
 			Height, 0,    // bottom, top
 			0, 1);
 
+
+
+
+
+		_drawTestBatch = new PrimitiveBatch(GraphicsDevice);
+		_drawTest = new PrimitiveDrawing(_drawTestBatch);
+
+
+
 	}
 
 	protected override void Update(GameTime gameTime)
@@ -80,7 +114,8 @@ public class Game1 : Game
 		if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Kb.IsKeyDown(Keys.Escape))
 			Exit();
 
-		_world.Update();
+		_mwWorld.Update();
+		_world.Update(gameTime);
 
 		base.Update(gameTime);
 	}
@@ -90,13 +125,28 @@ public class Game1 : Game
 		GraphicsDevice.Clear(Color.Transparent);
 
 		_spriteBatch.Begin();
-		_world.Draw();
+		_mwWorld.Draw();
+		_world.Draw(gameTime);
 		_spriteBatch.End();
 
 		if (Config.DrawGrid)
 		{
 			DrawGrid();
 		}
+
+
+		_drawTestBatch.Begin(ref _primitivesProjectionMatrix, ref _matrixIdentity);
+
+		_drawTest.DrawSegment(new Vector2(10, 10), new Vector2(500, 300), Color.Red);
+		// var fill = Color.Orange;
+		var fill = Color.Black;
+		
+		fill.A = Byte.MinValue;
+		// fill.A = Byte.MaxValue;
+		_drawTest.DrawSolidCircle(new Vector2(10, 10), 222, Color.Red, fill);
+
+		_drawTestBatch.End();
+
 
 		base.Draw(gameTime);
 	} // Draw

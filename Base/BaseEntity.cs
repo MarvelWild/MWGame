@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.ECS;
 
 namespace MwGame
 {
@@ -19,6 +20,11 @@ namespace MwGame
                 _location = value;
             }
         }
+
+
+		public virtual void Load(){
+			
+		}
 
         public void SetTexture(string path)
         {
