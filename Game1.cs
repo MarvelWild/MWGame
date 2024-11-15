@@ -22,6 +22,7 @@ public class Game1 : Game
 
 	private WorldBuilder _worldBuilder;
 	private World _world;
+	private SpriteFont _font;
 
 
 
@@ -52,6 +53,7 @@ public class Game1 : Game
 		_graphics = new GraphicsDeviceManager(this);
 		Content.RootDirectory = "Content";
 		IsMouseVisible = true;
+		Window.AllowUserResizing = true;
 	}
 
 	private Matrix _primitivesProjectionMatrix;
@@ -104,7 +106,7 @@ public class Game1 : Game
 		_drawTestBatch = new PrimitiveBatch(GraphicsDevice);
 		_drawTest = new PrimitiveDrawing(_drawTestBatch);
 
-
+		_font = Content.Load<SpriteFont>("font/font1");
 
 	}
 
@@ -127,6 +129,7 @@ public class Game1 : Game
 		_spriteBatch.Begin();
 		_mwWorld.Draw();
 		_world.Draw(gameTime);
+		_spriteBatch.DrawString(_font, "yo!!!!", new Vector2(100, 100), Color.Green);
 		_spriteBatch.End();
 
 		if (Config.DrawGrid)
@@ -137,7 +140,13 @@ public class Game1 : Game
 
 		_drawTestBatch.Begin(ref _primitivesProjectionMatrix, ref _matrixIdentity);
 
-		_drawTest.DrawSegment(new Vector2(10, 10), new Vector2(500, 300), Color.Red);
+
+		for (int x = 10; x < Width; x+=10)
+		{
+			_drawTest.DrawSegment(new Vector2(x, 10), new Vector2(500, 300), Color.Red);	
+		}
+
+		
 		// var fill = Color.Orange;
 		var fill = Color.Black;
 		
