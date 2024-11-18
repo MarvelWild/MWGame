@@ -1,4 +1,12 @@
 task=[[
+
+>raindrop demo, https://www.monogameextended.net/docs/features/entities/
+
+
+entity system
+put demo code as entities
+
+
 run mge demos
   platformer
   

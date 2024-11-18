@@ -1,6 +1,7 @@
 namespace MwGame
 {
 
+	// todo: explain why not world
     public class MwWorld
     {
         // private Room _room;
