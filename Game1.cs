@@ -23,7 +23,7 @@ public class Game1 : Game
 	private WorldBuilder _worldBuilder;
 	private World _world;
 	private SpriteFont _font;
-
+	private OrthographicCamera _camera;
 
 
 	public int Width
@@ -80,6 +80,17 @@ public class Game1 : Game
 		
 		
 		base.Initialize();
+
+		Window.ClientSizeChanged += Window_ClientSizeChanged;
+	}
+
+	private void Window_ClientSizeChanged(object sender, System.EventArgs e)
+	{
+		_primitivesProjectionMatrix = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
+		_gridEffect.Projection = Matrix.CreateOrthographicOffCenter
+			(0, Width,     // left, right
+			Height, 0,    // bottom, top
+			0, 1);
 	}
 
 	BasicEffect _gridEffect;
@@ -129,7 +140,7 @@ public class Game1 : Game
 		_spriteBatch.Begin();
 		_mwWorld.Draw();
 		_world.Draw(gameTime);
-		_spriteBatch.DrawString(_font, "yo!!!!", new Vector2(100, 100), Color.Green);
+		_spriteBatch.DrawString(_font, "yo!!!!"+Width, new Vector2(100, 100), Color.Green);
 		_spriteBatch.End();
 
 		if (Config.DrawGrid)
@@ -167,7 +178,7 @@ public class Game1 : Game
 
 		// for (int x = 64; x < Width; x += 64)
 		// {
-		for (int x = 64; x < Width; x += 64)
+		for (int x = 64; x < Width+100; x += 64)
 		{
 			vertices.Clear();
 			vertices.Add(new VertexPositionColor(new Vector3(x, 0, 0), _gridColor));
