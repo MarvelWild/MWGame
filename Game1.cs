@@ -68,10 +68,14 @@ public class Game1 : Game
 
 		_worldBuilder = new WorldBuilder();
 
-		var aspectBuilder = new AspectBuilder();
-		_worldBuilder.AddSystem(new GameEntityDrawSystem(aspectBuilder));
+		// var aspectBuilder = new AspectBuilder();
+
+		_worldBuilder.AddSystem(new RainfallSystem());
+		_worldBuilder.AddSystem(new ExpirySystem());
+		_worldBuilder.AddSystem(new RenderSystem(GraphicsDevice));
 		_world = _worldBuilder.Build();
-		var player = _world.CreateEntity();
+
+		// var player = _world.CreateEntity();
 		
 		
 		
